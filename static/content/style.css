@@ -95,7 +95,7 @@ hr {
 }
 
 a, a:visited {
-    color: #3bc9db;
+    color: #1098ad;
 }
 
 input {
@@ -165,6 +165,10 @@ input:focus{
 @media (prefers-color-scheme: dark) {
     body {
         color: #f1f3f5;
+    }
+
+    a, a:visited {
+        color: #3bc9db;
     }
 
     #wrapper {
