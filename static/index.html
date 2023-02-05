@@ -32,6 +32,9 @@
             let modal;
 
             window.onload = async function() {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+
                 error = document.getElementById("error");
 
                 modal = document.getElementById("modal");
@@ -43,6 +46,11 @@
                     }
                 });
             }
+
+            window.addEventListener("resize", () => {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            });
 
             const closeInput = function() {
                 let form = document.getElementById("form")

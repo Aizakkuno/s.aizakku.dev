@@ -140,6 +140,8 @@ def api_generate(url):
         return {"code": db_url["code"]}
 
     code = generate_code()
+    while db.urls.find({"code": code}):
+        code = generate_code()
 
     db.urls.insert_one({"url": url, "code": code})
 

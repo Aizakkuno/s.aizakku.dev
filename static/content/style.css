@@ -3,6 +3,8 @@ body {
     margin: 0;
     padding: 0;
 
+    overflow: hidden;
+
     background-image: url(/content/galaxy.jpeg);
     background-repeat: no-repeat;
     background-position: center;
@@ -19,14 +21,12 @@ body {
 
 #wrapper {
     width: 100vw;
-    height: 100vh;
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
 
     background-color: rgba(248, 249, 250, 0.8);
 
     backdrop-filter: blur(1em);
-
-    width: 100vw;
-    height: 100vh;
 
     display: flex;
     justify-content: center;
