@@ -9,7 +9,7 @@ client = MongoClient('localhost', 27017)
 
 db = client.short_db
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="./static", static_url_path="/content", static_folder="./static/content")
 
 def generate_code(n = 6):
     return "".join(random.choices(string.ascii_letters + string.digits, k=n))
@@ -113,7 +113,7 @@ def json_key(key,
 
 @app.route("/")
 def index():
-    return render_template("./index.html")
+    return render_template("index.html")
 
 
 @app.route("/<string:code>")

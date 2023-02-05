@@ -1,40 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
-        <title>SponsorBot Dashboard</title>
+        <!-- Primary Meta Tags -->
+        <title>aizakku's Link Shortener</title>
+        <meta name="title" content="aizakku's Link Shortener">
+        <meta name="description" content="Link shortener on s.aizakku.dev">
+        <meta name="robots" content="index"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" href="./media/style.css">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://s.aizakku.dev/">
+        <meta property="og:title" content="aizakku's Link Shortener">
+        <meta property="og:description" content="Link shortener on s.aizakku.dev">
+
+        <!-- Twitter -->
+        <meta property="twitter:url" content="https://s.aizakku.dev/">
+        <meta property="twitter:title" content="aizakku's Link Shortener">
+        <meta property="twitter:description" content="Link shortener on s.aizakku.dev">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+        <link rel="stylesheet" href="./content/style.css">
+
+        <script>
+            let error;
+            let modal;
+
+            window.onload = async function() {
+                error = document.getElementById("error");
+
+                modal = document.getElementById("modal");
+                modal.style.maxHeight = modal.offsetHeight + "px";
+
+                document.getElementById("url").addEventListener("keypress", async(e) => {
+                    if (e.key == "Enter") {
+                        await generate();
+                    }
+                });
+            }
+
+            const closeInput = function() {
+                let form = document.getElementById("form")
+
+                modal.style.maxHeight = modal.offsetHeight - form.offsetHeight + "px";
+                form.style.opacity = "0";
+            }
+
+            const setError = function(msg, height = "1.5em") {
+                error.innerHTML = msg;
+                error.style.height = height;
+                error.style.marginBottom = "1em";
+                error.style.opacity = "1";
+            }
+
+            const copy = function() {
+                let copyarea = document.getElementById("copyarea");
+
+                copyarea.select();
+                copyarea.setSelectionRange(0, 99999);
+
+                navigator.clipboard.writeText(copyarea.value)
+            }
+
+            const generate = async function() {
+                let error = document.getElementById("error");
+
+                let headers = {"Content-Type": "application/json"};
+                let body = {"url": document.getElementById("url").value};
+                let data = {headers: headers, body: JSON.stringify(body), method: "POST"}
+
+                let response = await fetch("/api/generate", data);
+
+                let responseData = await response.text();
+                let responseJSON;
+                try {
+                    responseJSON = JSON.parse(responseData);
+                } catch (err) {
+                    await setError(error, "Server failure");
+                    return;
+                }
+
+                if (!response.ok) {
+                    await setError(error, responseJSON.text);
+                    return;
+                }
+
+                let shortenedURL = window.location.href + responseJSON.code;
+
+                navigator.clipboard.writeText(shortenedURL);
+
+                closeInput();
+                setError(`Copied <a href="${shortenedURL}" target="_blank">${shortenedURL}</a> to clipboard.
+                          <br><br><a href="/">Generate another link?</a>`, "4.5em")
+            }
+        </script>
     </head>
     <body>
-        <div class="modal">
-            <div class="section">
-                <div class="left">
-                    <p>{{email}}</p>
+        <input type="text" id="copyarea">
+        <div id="wrapper">
+            <div id="modal">
+                <div class="center-image">
+                    <a href="https://aizakku.dev"><img id="logo" src="./content/logo.webp" alt="Logo"></a>
                 </div>
-                <div class="right">
-                    <label for="name">Name: </label>
-                    <input name="name" id="name" type="text">
-                </div>
-            </div>
-            <hr>
-            <div class="section">
-                <div class="left">
-                    <span class="button material-symbols-outlined">play_arrow</span>
-                    <span class="button material-symbols-outlined">stop</span>
-                </div>
-                <div class="right">
-                    <label for="epm" class="label">Emails/min: </label>
-                    <input name="epm" id="epm" type="number">
+                <hr>
+                <p id="error"></p>
+                <div id="form">
+                    <input id="url" type="text" placeholder="URL to shorten" autofocus>
+                    <div class="v-spacer"></div>
+                    <span>
+                        <button class="material-symbols-outlined" onclick="generate()">add</button>
+                    </span>
                 </div>
             </div>
-            <hr>
-            <code>
-                Sent email to Example Company 1.<br>
-                Sent email to Example Company 2.<br>
-                Sent email to Example Company 3.<br>
-                Sent email to Example Company 4.<br>
-            </code>
         </div>
     </body>
 </html>
