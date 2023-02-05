@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SponsorBot Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="./media/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    </head>
+    <body>
+        <div class="modal">
+            <div class="section">
+                <div class="left">
+                    <p>{{email}}</p>
+                </div>
+                <div class="right">
+                    <label for="name">Name: </label>
+                    <input name="name" id="name" type="text">
+                </div>
+            </div>
+            <hr>
+            <div class="section">
+                <div class="left">
+                    <span class="button material-symbols-outlined">play_arrow</span>
+                    <span class="button material-symbols-outlined">stop</span>
+                </div>
+                <div class="right">
+                    <label for="epm" class="label">Emails/min: </label>
+                    <input name="epm" id="epm" type="number">
+                </div>
+            </div>
+            <hr>
+            <code>
+                Sent email to Example Company 1.<br>
+                Sent email to Example Company 2.<br>
+                Sent email to Example Company 3.<br>
+                Sent email to Example Company 4.<br>
+            </code>
+        </div>
+    </body>
+</html>
