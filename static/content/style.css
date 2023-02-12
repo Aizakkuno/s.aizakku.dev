@@ -6,12 +6,14 @@ body {
     overflow: hidden;
 
     background-image: url(/content/galaxy.jpeg);
+    background-color: #f1f3f5;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
 
     font-family: 'Noto Sans', sans-serif;
+    /* add black color for font? */
 }
 
 #copyarea {
@@ -164,6 +166,7 @@ input:focus{
 
 @media (prefers-color-scheme: dark) {
     body {
+        background-color: #000;
         color: #f1f3f5;
     }
 
